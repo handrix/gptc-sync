@@ -1,0 +1,4 @@
+package syncer
+
+func Schedule() {
+}
