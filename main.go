@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"gptc-sync/syncer"
 	"net/http"
 
 	"gptc-sync/pkg/setting"
 	"gptc-sync/routers"
-	"gptc-sync/syncer"
 )
 
 func main() {
@@ -19,6 +19,6 @@ func main() {
 		WriteTimeout:   setting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-	go syncer.Schedule()
+	go syncer.CurrentBlock()
 	s.ListenAndServe()
 }

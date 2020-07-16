@@ -1,7 +1,8 @@
 package syncer
 
-func Schedule() {
-	// 当前最高块
-	cb := CurrentBlock()
-	//库中最高块
+import "fmt"
+
+func GetBlock() {
+	currentBlock := CurrentBlock()
+	fmt.Println(currentBlock)
 }
