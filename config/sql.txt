@@ -1,0 +1,10 @@
+CREATE TABLE `gptc_node` (
+`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+`miner` varchar(100) DEFAULT '' COMMENT '矿工',
+`hash` varchar(100) DEFAULT '' COMMENT '哈希值',
+`number` varchar(100) DEFAULT '' COMMENT '区块数',
+`modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',
+`deleted_on` int(10) unsigned DEFAULT '0',
+`state` tinyint(3) unsigned DEFAULT '1' COMMENT '状态 0为禁用、1为启用',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='区块同步表';
