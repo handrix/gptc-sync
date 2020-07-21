@@ -2,6 +2,7 @@ package syncer
 
 import (
 	"encoding/json"
+	"fmt"
 	"gptc-sync/pkg/setting"
 	"io/ioutil"
 	"net/http"
@@ -19,7 +20,9 @@ type NodeDetail struct {
 	number string
 }
 
-func CurrentBlock() uint32 {
+type BlockMethod struct{}
+
+func (b *BlockMethod) CurrentBlock() uint32 {
 	var dat map[string]interface{}
 
 	client := &http.Client{}
@@ -49,11 +52,18 @@ func CurrentBlock() uint32 {
 	return currentBlock
 }
 
-func BlockDetail() *NodeDetail {
+func (b *BlockMethod) BlockDetail(number int64) map[string]interface{} {
 	var dat map[string]interface{}
 
 	client := &http.Client{}
-	payload := strings.NewReader(setting.BlockDetailParams)
+	// format payload
+	formatPayload := setting.BlockDetailParams
+	hex := strconv.FormatInt(number, 16)
+	formatPayload = fmt.Sprintf(formatPayload, "0x"+hex)
+	fmt.Println(hex)
+	fmt.Println(formatPayload)
+	payload := strings.NewReader(formatPayload)
+
 	req, err := http.NewRequest("POST", url, payload)
 
 	if err != nil {
@@ -66,14 +76,9 @@ func BlockDetail() *NodeDetail {
 	// json解析
 	body, err := ioutil.ReadAll(res.Body)
 	json.Unmarshal([]byte(body), &dat)
-	// 提取数据
-	result := dat["result"].(map[string]interface{})
-	// data
-	miner := result["miner"].(string)
-	hash := result["hash"].(string)
-	number := result["number"].(string)
 
-	nodeDetail := &NodeDetail{miner: miner, hash: hash, number: number}
-	return nodeDetail
+	result := dat["result"].(map[string]interface{})
+	result["numberInt"] = number
+	return result
 
 }

@@ -1,4 +1,4 @@
-CREATE TABLE `block` (
+CREATE TABLE `gptc_block` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `miner` varchar(100) DEFAULT '',
   `hash` varchar(100) DEFAULT '',
@@ -9,10 +9,9 @@ CREATE TABLE `block` (
   `gas_used` varchar(100) DEFAULT '',
   `mix_hash` varchar(100) DEFAULT '',
   `nonce` varchar(100) DEFAULT '',
-  `number_int` varchar(100) DEFAULT '',
+  `number_int` int(10) unsigned,
   `parent_hash` varchar(100) DEFAULT '',
   `receipts_root` varchar(100) DEFAULT '',
-  `sha_3_uncles` varchar(100) DEFAULT '',
   `size` varchar(100) DEFAULT '',
   `state_root` varchar(100) DEFAULT '',
   `timestamp` varchar(100) DEFAULT '',

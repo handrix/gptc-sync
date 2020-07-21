@@ -19,6 +19,6 @@ func main() {
 		WriteTimeout:   setting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
-	go syncer.CurrentBlock()
+	go syncer.SyncBlock()
 	s.ListenAndServe()
 }

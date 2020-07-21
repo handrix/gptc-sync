@@ -1,7 +1,8 @@
 package models
 
-type Node struct {
-	ID               int    `gorm:"primary_key" json:"id"`
+type Block struct {
+	Model
+
 	Miner            string `json:"miner"`
 	Hash             string `json:"hash"`
 	Number           string `json:"number"`
@@ -11,10 +12,9 @@ type Node struct {
 	GasUsed          string `json:"gas_used"`
 	MixHash          string `json:"mix_hash"`
 	Nonce            string `json:"nonce"`
-	NumberInt        string `json:"number_int"`
+	NumberInt        int64  `json:"number_int"`
 	ParentHash       string `json:"parent_hash"`
 	ReceiptsRoot     string `json:"receipts_root"`
-	Sha3Uncles       string `json:"sha_3_uncles"`
 	Size             string `json:"size"`
 	StateRoot        string `json:"state_root"`
 	Timestamp        string `json:"timestamp"`
@@ -23,25 +23,35 @@ type Node struct {
 }
 
 func AddBlock(data map[string]interface{}) error {
-	db.Create(&Node{
+	db.Create(&Block{
 		Miner:            data["miner"].(string),
 		Hash:             data["hash"].(string),
 		Number:           data["number"].(string),
 		Difficulty:       data["difficulty"].(string),
-		ExtraData:        data["extra_data"].(string),
-		GasLimit:         data["gas_limit"].(string),
-		GasUsed:          data["gas_used"].(string),
-		MixHash:          data["gas_used"].(string),
+		ExtraData:        data["extraData"].(string),
+		GasLimit:         data["gasLimit"].(string),
+		GasUsed:          data["gasUsed"].(string),
+		MixHash:          data["mixHash"].(string),
 		Nonce:            data["nonce"].(string),
-		NumberInt:        data["number_int"].(string),
-		ParentHash:       data["parent_hash"].(string),
-		ReceiptsRoot:     data["receipts_root"].(string),
-		Sha3Uncles:       data["sha_3_uncles"].(string),
+		NumberInt:        data["numberInt"].(int64),
+		ParentHash:       data["parentHash"].(string),
+		ReceiptsRoot:     data["receiptsRoot"].(string),
 		Size:             data["size"].(string),
-		StateRoot:        data["state_root"].(string),
+		StateRoot:        data["stateRoot"].(string),
 		Timestamp:        data["timestamp"].(string),
-		TotalDifficulty:  data["total_difficulty"].(string),
-		TransactionsRoot: data["transactions_root"].(string),
+		TotalDifficulty:  data["totalDifficulty"].(string),
+		TransactionsRoot: data["transactionsRoot"].(string),
 	})
 	return nil
+}
+
+func MaxIndex() int64 {
+	var count int64
+	db.Model(&Block{}).Count(&count)
+	return count
+}
+
+func GetBlock(number int64) (block []Block) {
+	db.Where("number_int = ?", number).First(&block)
+	return
 }
